@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <Script>
+    var carPic=document.createElement("img");
+    var carPicLoaded = false;
+    var carX = 40, carY= 250;
+    var carXSpeed = 6, carYSpeed = 6;
+    var carAng = .2;
+    const trackWidth = 40;
+    const trackHeight = 40;
+    const trackGap = 1;
+    const trackCols = 20;
+    const trackRows = 15;
+    var	trackGrid	=
+						[	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,
+								1,	1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	1,
+								1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,
+								1,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	1,
+								1,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	1,
+								1,	0,	0,	1,	1,	0,	0,	1,	1,	1,	1,	1,	0,	0,	0,	1,	1,	0,	0,	1,
+								1,	0,	0,	1,	0,	0,	0,	0,	1,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,
+								1,	0,	0,	1,	0,	0,	0,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,
+								1,	0,	0,	1,	0,	0,	0,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,	0,	0,	1,
+								1,	0,	0,	1,	0,	0,	1,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,	0,	0,	1,
+								1,	0,	0,	1,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,
+								1,	1,	1,	1,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	1,
+								1,	0,	0,	0,	0,	0,	1,	1,	1,	0,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,
+								1,	0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	1,	1,
+								1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1];    var trackCounter = trackCols * (trackRows - 3);
+
+
+    var canvas;
+    var canvasContext;
+
+    window.onload = function() {
+      canvas = document.getElementById('gameCanvas');
+      canvasContext = canvas.getContext('2d');
+
+      carPic.onload=function(){
+        carPicLoaded = true;
+      }
+
+      carPic.src="Blue-Car-Mini.png";
+
+      var framesPerSecond = 30;
+      setInterval(function() {
+        moveEverything();
+        drawEverything();
+       }, 1000/framesPerSecond);
+
+      //  carReset();
+    }
+
+    function carRedirect() {
+      const paddleCenter = paddleX + paddleLength/2;
+      carXSpeed = (carX - paddleCenter)/5;
+      carYSpeed *= -1;
+    }
+
+    function carReset() {
+      carXSpeed *= -1;
+      carYSpeed *= -1;
+      carX = canvas.width/2 + 50;
+      carY = canvas.height/2;
+    }
+
+    function bounceOffTrackAtPixelCoord(pixelX,pixelY) {
+      var row = Math.floor(pixelY/trackHeight);
+      var column = Math.floor(pixelX/trackWidth);
+      if(column >= trackCols || column < 0 || row < 0 || row > trackRows) {
+        return false;
+      } else {
+        if(isTrackAtTileCoord(column,row)) {
+          var trackIndex = trackTileToIndex(column, row);
+          var prevCarX = carX - carXSpeed;
+          var prevCarY = carY - carYSpeed;
+          var prevCol = Math.floor(prevCarX / trackWidth);
+          var prevRow = Math.floor(prevCarY / trackHeight);
+          var bothTestsFailed = true;
+
+          if(prevCol != column) {
+            var adjacentTrackIndex = trackTileToIndex(prevCol, row);
+
+            if(trackGrid[adjacentTrackIndex] != 1) {
+              carXSpeed *= -1;
+              bothTestsFailed = false;
+            }
+          }
+
+          if(prevRow != row) {
+            var adjacentTrackIndex = trackTileToIndex(column, prevRow);
+
+            if(trackGrid != 1) {
+              carYSpeed *= -1;
+              bothTestsFailed = false;
+            }
+          }
+
+          if(bothTestsFailed) {
+            carXSpeed *= -1;
+            carYSpeed *= -1;
+          }
+        }
+      }
+    }
+
+    function isTrackAtTileCoord(trackTileCol, trackTileRow) {
+      var trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
+      return (trackGrid[trackIndex] == 1);
+    }
+
+    function trackTileToIndex(tileCol, tileRow) {
+      var trackIndex = tileCol + trackCols*tileRow;
+      return trackIndex;
+    }
+
+    function moveEverything() {
+      if(carX < 0 || carX > canvas.width) {
+        carXSpeed *= -1;
+      }
+      if(carY < 0) {
+        carYSpeed *= -1;
+      }
+      // if(carY >= paddleY && carY <= (paddleY + paddleThickness) && carX >= paddleX && carX <= (paddleX + paddleLength) && carYSpeed === Math.abs(carYSpeed)) {
+      //     carRedirect();
+      // }
+      if(carY > canvas.height) {
+        carReset();
+      }
+
+      bounceOffTrackAtPixelCoord(carX, carY);
+
+      carX +=carXSpeed
+      carY +=carYSpeed
+    }
+
+    function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+      canvasContext.fillStyle = fillColor;
+      canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+    }
+
+    function drawTracks() {
+      for(i=0; i<trackCols; i++) {
+        for(j=0; j<trackRows; j++) {
+          if(isTrackAtTileCoord(i, j)) {
+            colorRect(i*trackWidth, j*trackHeight, trackWidth - trackGap, trackHeight - trackGap, 'orange')
+          }
+        }
+      }
+    }
+
+    function carDraw() {
+      if(carPicLoaded) {
+        canvasContext.save();
+        canvasContext.translate(carX, carY);
+        canvasContext.rotate(carAng);
+        canvasContext.drawImage(carPic, carX-carPic.width/2, carY-carPic.height/2);
+        canvasContext.restore();
+      }
+    }
+
+    function drawEverything() {
+      // black background
+      colorRect(0, 0, canvas.width, canvas.height, "black")
+
+      // adds blue car image
+      carDraw();
+
+      drawTracks();
+    }
+  </Script>
+</body>
+</html>
