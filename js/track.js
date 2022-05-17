@@ -49,11 +49,13 @@ function trackTileToIndex(tileCol, tileRow) {
 }
 
 function drawTracks() {
-  for(i=0; i<trackCols; i++) {
-    for(j=0; j<trackRows; j++) {
-      var trackLeftEdgeX = i*trackWidth;
-      var trackTopEdgeY = j*trackHeight;
-      var trackIndex = trackTileToIndex(i, j);
+  var trackIndex = 0;
+  var trackTopEdgeY = 0;
+
+  for(i=0; i<trackRows; i++) {
+    var trackLeftEdgeX = 0;
+    for(j=0; j<trackCols; j++) {
+
       var trackTypeHere = trackGrid[ trackIndex ];
       var useImg;
 
@@ -73,6 +75,10 @@ function drawTracks() {
       }
 
       canvasContext.drawImage(useImg, trackLeftEdgeX, trackTopEdgeY);
+      
+      trackIndex++;
+      trackLeftEdgeX += trackWidth;
     }
+    trackTopEdgeY += trackHeight;
   }
 }

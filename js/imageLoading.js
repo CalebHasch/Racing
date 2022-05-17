@@ -23,7 +23,7 @@ function countLoadedImageAndLaunchIfReady() {
 function loadImages() {
   var imageList = [
     {varName:carPic, file:"Blue-Car-Mini.png"},
-    {varName:trackRoadPic, file:"d_road_asphalt_40x40.png"},
+    {varName:trackRoadPic, file:"asphalt2_40x40.jpg"},
     {varName:trackWallPic, file:"brick-40x40.png"},
     {varName:grassPic, file:"grass_40x40.jpg"},
     {varName:finishLinePic, file:"checkered_finishLine_40x40.jpg"}
