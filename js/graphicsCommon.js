@@ -3,7 +3,6 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
   canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
-
 function drawBitmapCenteredAtLocationWithRoation(graphic, atX, atY, withAngle) {
   canvasContext.save();
     canvasContext.translate(atX, atY);

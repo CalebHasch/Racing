@@ -1,5 +1,3 @@
-var carPic=document.createElement("img");
-var carPicLoaded = false;
 var carX = 60, carY= 250;
 var carSpeed = 0;
 var carAng = -.5*Math.PI;
@@ -9,13 +7,12 @@ const turnRate = .03*Math.PI;
 const groundSpeedDecay = .94;
 const minTurningSpeed = .5;
 
-function carInit() {
-  carPic.onload=function(){
-    carPicLoaded = true;
-  }
+// function carInit() {
+//   carPic.onload=function(){
+//     carPicLoaded = true;
+//   }
 
-  carPic.src="Blue-Car-Mini.png";
-}
+// }
 
 function carReset() {
   for(i=0; i<trackGrid.length; i++) {
@@ -26,10 +23,6 @@ function carReset() {
       carX = tileCol * trackWidth + 0.5*trackWidth;
       carY = tileRow * trackHeight + 0.5*trackHeight;
       trackGrid[i] = 0;
-
-      document.getElementById("debugText").innerHTML	=
-      "Car	starting	at	tile:	("	+	tileCol	+	",	"	+	tileRow	+	")	"	+
-      "Pixel	coordinate:	("	+	carX	+	",	"	+	carY	+	")";
     }
   }
 }
@@ -57,13 +50,13 @@ function carMove() {
     carX = nextX;
     carY = nextY;
   } else {
-    carSpeed *= -0.5;
+    carSpeed *= -0.25;
   }
   carSpeed *= groundSpeedDecay;
 }
 
 function carDraw() {
-  if(carPicLoaded) {
+  if(true) {
     drawBitmapCenteredAtLocationWithRoation(carPic, carX, carY, carAng);
   }
 }

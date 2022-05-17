@@ -1,28 +1,29 @@
 const trackWidth = 40;
 const trackHeight = 40;
-const trackGap = 1;
 const trackCols = 20;
 const trackRows = 15;
 const trackRoad = 0;
 const trackWall = 1;
 const trackPlayer = 2;
+const trackFinish = 3;
+const trackGrass = 4;
 
 var	trackGrid	=
-						[	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,
-								1,	1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	1,
+						  [	4,	4,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	4,
+								4,	1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	1,
 								1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,
 								1,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	1,
-								1,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	1,
-								1,	0,	0,	1,	1,	0,	0,	1,	1,	1,	1,	1,	0,	0,	0,	1,	1,	0,	0,	1,
+								1,	0,	0,	0,	1,	1,	1,	1,	4,	4,	4,	1,	1,	1,	1,	1,	1,	0,	0,	1,
+								1,	0,	0,	1,	1,	0,	0,	1,	1,	4,	1,	1,	0,	0,	0,	1,	1,	0,	0,	1,
 								1,	0,	0,	1,	0,	0,	0,	0,	1,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,
 								1,	0,	0,	1,	0,	0,	0,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,
 								1,	0,	0,	1,	0,	0,	0,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,	0,	0,	1,
 								1,	0,	0,	1,	0,	0,	1,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,	0,	0,	1,
 								1,	0,	2,	1,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,
-								1,	1,	1,	1,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	1,
-								1,	0,	0,	0,	0,	0,	1,	1,	1,	0,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,
-								1,	0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	1,	1,
-								1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1];    var trackCounter = trackCols * (trackRows - 3);
+								1,	1,	1,	1,	0,	0,	1,	1,	1,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	1,
+								1,	0,	3,	0,	0,	0,	1,	4,	1,	1,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,
+								1,	0,	3,	0,	0,	0,	1,	4,	4,	1,	1,	1,	1,	1,	1,	0,	0,	0,	1,	1,
+								1,	1,	1,	1,	1,	1,	1,	4,	4,	4,	4,	4,	4,	1,	1,	1,	1,	1,	1,	1];    var trackCounter = trackCols * (trackRows - 3);
 
 function checkForTrackAtPixelCoord(pixelX,pixelY) {
   var row = Math.floor(pixelY/trackHeight);
@@ -50,9 +51,28 @@ function trackTileToIndex(tileCol, tileRow) {
 function drawTracks() {
   for(i=0; i<trackCols; i++) {
     for(j=0; j<trackRows; j++) {
-      if(isWallAtTileCoord(i, j)) {
-        colorRect(i*trackWidth, j*trackHeight, trackWidth - trackGap, trackHeight - trackGap, 'orange')
+      var trackLeftEdgeX = i*trackWidth;
+      var trackTopEdgeY = j*trackHeight;
+      var trackIndex = trackTileToIndex(i, j);
+      var trackTypeHere = trackGrid[ trackIndex ];
+      var useImg;
+
+      switch( trackTypeHere ) {
+        case trackRoad:
+          useImg = trackRoadPic;
+          break;
+        case trackWall:
+          useImg = trackWallPic;
+          break;
+        case trackFinish:
+          useImg = finishLinePic;
+          break;
+        case trackGrass:
+          useImg = grassPic;
+          break;
       }
+
+      canvasContext.drawImage(useImg, trackLeftEdgeX, trackTopEdgeY);
     }
   }
 }
