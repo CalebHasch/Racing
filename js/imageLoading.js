@@ -1,4 +1,5 @@
 var carPic=document.createElement("img");
+var car2Pic=document.createElement("img");
 var trackRoadPic=document.createElement("img");
 var trackWallPic=document.createElement("img");
 var finishLinePic=document.createElement("img");
@@ -23,6 +24,7 @@ function countLoadedImageAndLaunchIfReady() {
 function loadImages() {
   var imageList = [
     {varName:carPic, file:"Blue-Car-Mini.png"},
+    {varName:car2Pic, file:"red-car_35x41.png"},
     {varName:trackRoadPic, file:"asphalt2_40x40.jpg"},
     {varName:trackWallPic, file:"brick-40x40.png"},
     {varName:grassPic, file:"grass_40x40.jpg"},

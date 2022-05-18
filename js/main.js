@@ -1,5 +1,7 @@
 var canvas;
 var canvasContext;
+var p1 = new carClass();
+var p2 = new carClass();
 
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -7,7 +9,8 @@ window.onload = function() {
 
   loadImages();
 
-  carReset();
+  p2.carReset(car2Pic);
+  p1.carReset(carPic);
 
   inputInit();
 }
@@ -21,13 +24,16 @@ function loadingDoneSoStartGame() {
 }
 
 function moveEverything() {
-  carMove();
+  p1.carMove();
+  p2.carMove();
 }
 
 function drawEverything() {
   // adds the orange track
   drawTracks();
-  
+  p2.carDraw();
+
   // adds blue car image
-  carDraw()
+  p1.carDraw();
+
 }

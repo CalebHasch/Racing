@@ -19,13 +19,13 @@ var	trackGrid	=
 								1,	0,	0,	1,	0,	0,	0,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,
 								1,	0,	0,	1,	0,	0,	0,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,	0,	0,	1,
 								1,	0,	0,	1,	0,	0,	1,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,	0,	0,	1,
-								1,	0,	2,	1,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,
+								1,	2,	2,	1,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,	0,	0,	1,	0,	0,	1,
 								1,	1,	1,	1,	0,	0,	1,	1,	1,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	1,
 								1,	0,	3,	0,	0,	0,	1,	4,	1,	1,	0,	0,	1,	1,	0,	0,	0,	0,	0,	1,
 								1,	0,	3,	0,	0,	0,	1,	4,	4,	1,	1,	1,	1,	1,	1,	0,	0,	0,	1,	1,
 								1,	1,	1,	1,	1,	1,	1,	4,	4,	4,	4,	4,	4,	1,	1,	1,	1,	1,	1,	1];    var trackCounter = trackCols * (trackRows - 3);
 
-function checkForTrackAtPixelCoord(pixelX,pixelY) {
+function getTrackAtPixelCoord(pixelX,pixelY) {
   var row = Math.floor(pixelY/trackHeight);
   var column = Math.floor(pixelX/trackWidth);
 
@@ -34,7 +34,7 @@ function checkForTrackAtPixelCoord(pixelX,pixelY) {
   } else {
       var trackIndex = trackTileToIndex(column, row);
 
-      return (trackGrid[trackIndex] == trackRoad);
+      return trackGrid[trackIndex];
   }
 }
 

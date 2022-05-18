@@ -1,36 +1,43 @@
-var keyHeldGas = false;
-var keyHeldReverse = false;
-var keyHeldLeft = false;
-var keyHeldRight = false;
-
+// player 1 buttons
 const keyUpArrow = 38;
 const keyDownArrow = 40;
 const keyLeftArrow = 37;
 const keyRightArrow = 39;
 
+// player 2 buttons
+const keyW = 87;
+const keyS = 83;
+const keyA = 65;
+const keyD = 68;
+
 function inputInit() {
   document.addEventListener('keydown', keyPressed);
   document.addEventListener('keyup', keyReleased);
+
+  p1.setupControls(keyUpArrow, keyDownArrow, keyLeftArrow, keyRightArrow);
+  p2.setupControls(keyW, keyS, keyA, keyD);
 }
 
-function setKeyHoldState(thisKey, setTo) {
-  if(thisKey === keyUpArrow) {
-    keyHeldGas = setTo;
-  } else if(thisKey === keyDownArrow) {
-    keyHeldReverse = setTo;
+function setKeyHoldState(thisKey, thisCar, setTo) {
+  if(thisKey === thisCar.controlKeyForGas) {
+    thisCar.keyHeldGas = setTo;
+  } else if(thisKey === thisCar.controlKeyForReverse) {
+    thisCar.keyHeldReverse = setTo;
   } 
-  if(thisKey === keyLeftArrow) {
-    keyHeldLeft = setTo;
-  } else if(thisKey === keyRightArrow) {
-    keyHeldRight = setTo;
+  if(thisKey === thisCar.controlKeyForLeft) {
+    thisCar.keyHeldLeft = setTo;
+  } else if(thisKey === thisCar.controlKeyForRight) {
+    thisCar.keyHeldRight = setTo;
   } 
 }
 
 function keyPressed(evt) {
-  setKeyHoldState(evt.keyCode, true);
+  setKeyHoldState(evt.keyCode, p1, true);
+  setKeyHoldState(evt.keyCode, p2, true);
   evt.preventDefault();
 }
 
 function keyReleased(evt)	{
-  setKeyHoldState(evt.keyCode, false);
+  setKeyHoldState(evt.keyCode, p1, false);
+  setKeyHoldState(evt.keyCode, p2, false);
 }
