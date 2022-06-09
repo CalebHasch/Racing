@@ -30,12 +30,11 @@ function getTrackAtPixelCoord(pixelX,pixelY) {
   var column = Math.floor(pixelX/trackWidth);
 
   if(column >= trackCols || column < 0 || row < 0 || row >= trackRows) {
-    return false;
-  } else {
-      var trackIndex = trackTileToIndex(column, row);
+    return trackWall;
+  } 
+    var trackIndex = trackTileToIndex(column, row);
 
-      return trackGrid[trackIndex];
-  }
+    return trackGrid[trackIndex];
 }
 
 function isWallAtTileCoord(trackTileCol, trackTileRow) {

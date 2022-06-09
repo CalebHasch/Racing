@@ -9,8 +9,8 @@ window.onload = function() {
 
   loadImages();
 
-  p2.carReset(car2Pic);
-  p1.carReset(carPic);
+  p2.carInit(car2Pic, "Red Car");
+  p1.carInit(carPic, "Blue Car");
 
   inputInit();
 }
